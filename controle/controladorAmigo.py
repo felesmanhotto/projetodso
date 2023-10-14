@@ -77,7 +77,7 @@ class ControladorAmigo:
             else:
                 raise KeyError
         except KeyError:
-            self.__tela.amigo.mensagem("Amigo não existente")
+            self.__tela_amigo.mensagem("Amigo não existente")
 
 
 

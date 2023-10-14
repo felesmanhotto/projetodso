@@ -34,7 +34,7 @@ class TelaCompra(TelaAbstrata):
 
     def mostra(self, dados):
         print("Código: ", dados['codigo'])
-        print("Pagante: ", dados['pagante'])
+        print("Pagante: ", dados['pagante'].nome)
         print("Produtos: ", dados['produtos'])
         print("Valor: ", dados['valor'])
         print("Quitada: ", dados['quitada'])

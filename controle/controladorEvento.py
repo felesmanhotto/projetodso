@@ -85,21 +85,31 @@ class ControladorEvento:
             self.__tela_evento.mensagem("Evento não existente.")
 
     def add_amigo(self, evento):
-        cpf = self.__controlador_sistema.controlador_amigo.tela_amigo.seleciona()
-        amigo = self.__controlador_sistema.controlador_amigo.pega_amigo(cpf)
         try:
-            if amigo:
-                evento.add_amigo(amigo)         # verificar
-                self.__tela_evento.mostra_um_evento(evento)
-            else:
+            if evento.compras:
+                self.__tela_evento.mensagem("Não é possível adicionar amigos em um evento com compras.")
                 raise KeyError
+            cpf = self.__controlador_sistema.controlador_amigo.tela_amigo.seleciona()
+            amigo = self.__controlador_sistema.controlador_amigo.pega_amigo(cpf)
+            if not amigo:
+                self.__tela_evento.mensagem("Amigo não existente.")
+                raise KeyError
+            elif amigo in evento.amigos:
+                self.__tela_evento.mensagem("Amigo já está no evento")
+                raise KeyError
+            else:
+                evento.add_amigo(amigo)
         except KeyError:
-            self.__tela_evento.mensagem("Amigo não existente.")
+            pass
+        self.__tela_evento.mostra_um_evento(evento)
 
 
     def add_compra(self, evento):
-        compra = self.__controlador_sistema.controlador_compra.inclui_compra(evento)
-        evento.add_compra(compra)
+        try:
+            compra = self.__controlador_sistema.controlador_compra.inclui_compra(evento)
+            evento.add_compra(compra)
+        except KeyError:
+            pass
         self.__tela_evento.mostra_um_evento(evento)
 
     def remove_amigo(self, evento):
@@ -107,15 +117,18 @@ class ControladorEvento:
             cpf = self.__controlador_sistema.controlador_amigo.tela_amigo.seleciona()
             if self.__controlador_sistema.controlador_amigo.pega_amigo(cpf) in evento.amigos:
                 evento.exc_amigo(cpf)  # verificar
-                self.__tela_evento.mostra_um_evento(evento)
             else:
                 raise KeyError
         except KeyError:
             self.__tela_evento.mensagem("Amigo não está no evento.")
+        self.__tela_evento.mostra_um_evento(evento)
 
     def remove_compra(self, evento):
-        compra = self.__controlador_sistema.controlador_compra.exclui_compra(evento)
-        evento.exc_compra(compra.codigo)
+        try:
+            compra = self.__controlador_sistema.controlador_compra.exclui_compra(evento)
+            evento.exc_compra(compra.codigo)
+        except KeyError:
+            self.__tela_evento.mensagem("Compra não existente.")
         self.__tela_evento.mostra_um_evento(evento)
 
     def quita_compra(self, evento):
@@ -129,12 +142,15 @@ class ControladorEvento:
                 raise KeyError
         except:
             self.__tela_evento.mensagem("Compra não está no evento.")
+        self.__tela_evento.mostra_um_evento(evento)
 
 
     def quita_evento(self, evento):
         for c in self.__controlador_sistema.controlador_compra.compras:
             if c.evento == evento:
                 self.__controlador_sistema.controlador_compra.quita_compra(c)
+        self.__tela_evento.mensagem("Compras do evento quitadas.")
+        self.__tela_evento.mostra_um_evento(evento)
 
     def retorna(self):
         self.__controlador_sistema.abre_tela()
