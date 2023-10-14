@@ -16,49 +16,85 @@ class ControladorEvento:
 
     def inclui_evento(self):
         dados = self.__tela_evento.pega_dados()  #add parametros
-        evento = Evento(dados['nome'], dados['data'], dados['codigo'])  # verificar
-        self.__eventos.append(evento)
+        evento = self.pega_evento(dados['codigo'])
+        try:
+            if evento == None:
+                evento_incluir = Evento(dados['nome'], dados['data'], dados['codigo'])  # verificar
+                self.__eventos.append(evento_incluir)
+            else:
+                raise KeyError
+        except KeyError:
+            self.__tela_evento.mensagem("Evento já existente.")
 
     def lista_eventos(self):
-        for e in self.__eventos:
-            self.__tela_evento.mostra({'nome': e.nome, 'data': e.data, 'codigo': e.codigo})  #add parametros
+        try:
+            if self.__eventos:
+                for e in self.__eventos:
+                    self.__tela_evento.mostra({'nome': e.nome, 'data': e.data, 'codigo': e.codigo})
+            else:
+                raise KeyError
+        except KeyError:
+            self.__tela_evento.mensagem("Não há nenhum evento cadastrado.")
+
 
     def altera_evento(self):
         self.lista_eventos()
         codigo_evento = self.__tela_evento.seleciona()   #add parametros
         evento = self.pega_evento(codigo_evento)
-
-        novos_dados = self.__tela_evento.pega_dados()    #add parametros
-        evento.nome = novos_dados['nome']
-        evento.data = novos_dados['data']
-        evento.codigo = novos_dados['codigo']       # verificar
+        try:
+            if evento:
+                novos_dados = self.__tela_evento.pega_dados()  # add parametros
+                evento.nome = novos_dados['nome']
+                evento.data = novos_dados['data']
+                evento.codigo = novos_dados['codigo']  # verificar
+            else:
+                raise KeyError
+        except KeyError:
+            self.__tela_evento.mensagem("Evento não existente.")
 
     def exclui_evento(self):
         self.lista_eventos()
         codigo_evento = self.__tela_evento.seleciona()   #add parametros
         evento = self.pega_evento(codigo_evento)
+        try:
+            if evento:
+                self.__eventos.remove(evento)
+            else:
+                raise KeyError
+        except KeyError:
+            self.__tela_evento.mensagem("Evento não existente.")
 
-        self.__eventos.remove(evento)
 
     def olha_evento(self):
         self.lista_eventos()
         codigo = self.__tela_evento.seleciona()
         evento = self.pega_evento(codigo)       # verificar
+        try:
+            if evento:
+                self.__tela_evento.mostra_um_evento(evento)
 
-        self.__tela_evento.mostra_um_evento(evento)
+                lista_opcoes = {1: self.add_amigo, 2: self.add_compra, 3: self.remove_amigo,
+                                4: self.remove_compra, 5: self.quita_compra, 6: self.quita_evento,
+                                0: self.abre_tela}
 
-        lista_opcoes = {1: self.add_amigo, 2: self.add_compra, 3: self.remove_amigo,
-                        4: self.remove_compra, 5: self.quita_compra, 6: self.quita_evento,
-                        0: self.abre_tela}
-
-        while True:
-            lista_opcoes[self.__tela_evento.opcoes_um_evento()](evento)
+                while True:
+                    lista_opcoes[self.__tela_evento.opcoes_um_evento()](evento)
+            else:
+                raise KeyError
+        except KeyError:
+            self.__tela_evento.mensagem("Evento não existente.")
 
     def add_amigo(self, evento):
         cpf = self.__controlador_sistema.controlador_amigo.tela_amigo.seleciona()
         amigo = self.__controlador_sistema.controlador_amigo.pega_amigo(cpf)
-        evento.add_amigo(amigo)         # verificar
-        self.__tela_evento.mostra_um_evento(evento)
+        try:
+            if amigo:
+                evento.add_amigo(amigo)         # verificar
+                self.__tela_evento.mostra_um_evento(evento)
+            else:
+                raise KeyError
+        except KeyError:
+            self.__tela_evento.mensagem("Amigo não existente.")
 
 
     def add_compra(self, evento):
@@ -67,9 +103,15 @@ class ControladorEvento:
         self.__tela_evento.mostra_um_evento(evento)
 
     def remove_amigo(self, evento):
-        cpf = self.__controlador_sistema.controlador_amigo.tela_amigo.seleciona()
-        evento.exc_amigo(cpf)           # verificar
-        self.__tela_evento.mostra_um_evento(evento)
+        try:
+            cpf = self.__controlador_sistema.controlador_amigo.tela_amigo.seleciona()
+            if self.__controlador_sistema.controlador_amigo.pega_amigo(cpf) in evento.amigos:
+                evento.exc_amigo(cpf)  # verificar
+                self.__tela_evento.mostra_um_evento(evento)
+            else:
+                raise KeyError
+        except KeyError:
+            self.__tela_evento.mensagem("Amigo não está no evento.")
 
     def remove_compra(self, evento):
         compra = self.__controlador_sistema.controlador_compra.exclui_compra(evento)
@@ -79,9 +121,15 @@ class ControladorEvento:
     def quita_compra(self, evento):
         self.__controlador_sistema.controlador_compra.lista_compras_evento(evento)
         codigo_compra = self.__controlador_sistema.controlador_compra.tela_compra.seleciona()
-        compra = self.__controlador_sistema.controlador_compra.pega_compra(codigo_compra)           # verificar
+        compra = self.__controlador_sistema.controlador_compra.pega_compra(codigo_compra)
+        try:
+            if compra in evento.compras:
+                self.__controlador_sistema.controlador_compra.quita_compra(compra)
+            else:
+                raise KeyError
+        except:
+            self.__tela_evento.mensagem("Compra não está no evento.")
 
-        self.__controlador_sistema.controlador_compra.quita_compra(compra)
 
     def quita_evento(self, evento):
         for c in self.__controlador_sistema.controlador_compra.compras:

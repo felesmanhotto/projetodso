@@ -19,36 +19,67 @@ class ControladorAmigo:
 
     def inclui_amigo(self):
         dados = self.__tela_amigo.pega_dados()  #add parametros
-        amigo = Amigo(dados['nome'], dados['cpf'], dados['dinheiro'])  # verificar
-        self.__amigos.append(amigo)
+        amigo = self.pega_amigo(dados['cpf'])
+        try:
+            if amigo == None:
+                amigo_incluir = Amigo(dados['nome'], dados['cpf'], dados['dinheiro'])
+                self.__amigos.append(amigo_incluir)
+            else:
+                raise KeyError
+        except KeyError:
+            self.__tela_amigo.mensagem("Amigo já existente.")
 
     def lista_amigos(self):
-        for a in self.__amigos:
-            self.__tela_amigo.mostra({'nome': a.nome, 'cpf': a.cpf, 'dinheiro': a.carteira.dinheiro})  #add parametros
+        try:
+            if self.__amigos:
+                for a in self.__amigos:
+                    self.__tela_amigo.mostra({'nome': a.nome, 'cpf': a.cpf, 'dinheiro': a.carteira.dinheiro})
+            else:
+                raise KeyError
+        except KeyError:
+            self.__tela_amigo.mensagem("Não há nenhum amigo cadastrado.")
+
 
     def altera_amigo(self):
         self.lista_amigos()
         cpf_amigo = self.__tela_amigo.seleciona()   #add parametros
         amigo = self.pega_amigo(cpf_amigo)
-
-        novos_dados = self.__tela_amigo.pega_dados()    #add parametros
-        amigo.nome = novos_dados['nome']
-        amigo.cpf = novos_dados['cpf']      # verificar
-        amigo.carteira.dinheiro = novos_dados['dinheiro']
+        try:
+            if amigo:
+                novos_dados = self.__tela_amigo.pega_dados()  # add parametros
+                amigo.nome = novos_dados['nome']
+                amigo.cpf = novos_dados['cpf']  # verificar
+                amigo.carteira.dinheiro = novos_dados['dinheiro']
+            else:
+                raise KeyError
+        except KeyError:
+            self.__tela_amigo.mensagem("Amigo não existente.")
 
     def excluir_amigo(self):
         self.lista_amigos()
         cpf_amigo = self.__tela_amigo.seleciona()   #add parametros
         amigo = self.pega_amigo(cpf_amigo)
-
-        self.__amigos.remove(amigo)     # verificar
+        try:
+            if amigo:
+                self.__amigos.remove(amigo)
+            else:
+                raise KeyError
+        except KeyError:
+            self.__tela_amigo.mensagem("Amigo não existente.")
 
     def olha_carteira(self):
         self.lista_amigos()
         cpf_amigo = self.__tela_amigo.seleciona()   #add parametros
         amigo = self.pega_amigo(cpf_amigo)      # verificar
+        try:
+            if amigo:
+                self.__controlador_sistema.controlador_carteira.abre_tela(amigo)
+            else:
+                raise KeyError
+        except KeyError:
+            self.__tela.amigo.mensagem("Amigo não existente")
 
-        self.__controlador_sistema.controlador_carteira.abre_tela(amigo)
+
 
     def retorna(self):
         self.__controlador_sistema.abre_tela()
