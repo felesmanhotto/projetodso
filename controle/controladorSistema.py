@@ -1,6 +1,6 @@
 from limite.telaSistema import TelaSistema
 from controle.controladorEvento import ControladorEvento
-from controladorProduto import ControladorProduto
+from controle.controladorProduto import ControladorProduto
 from controle.controladorAmigo import ControladorAmigo
 from controle.controladorCompra import ControladorCompra
 from controle.controladorCarteira import ControladorCarteira
