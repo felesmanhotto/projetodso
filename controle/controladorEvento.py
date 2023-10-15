@@ -1,5 +1,6 @@
 from entidade.evento import Evento
 from limite.telaEvento import TelaEvento
+from excecao.saldo_negativo import SaldoNegativoException
 
 class ControladorEvento:
     def __init__(self, controlador_sistema):
@@ -110,6 +111,9 @@ class ControladorEvento:
             evento.add_compra(compra)
         except KeyError:
             pass
+        except SaldoNegativoException as e:
+            self.__tela_evento.mensagem(e)
+
         self.__tela_evento.mostra_um_evento(evento)
 
     def remove_amigo(self, evento):

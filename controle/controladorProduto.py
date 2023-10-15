@@ -20,20 +20,21 @@ class ControladorProduto:
 
     def inclui_produto(self):
         dados = self.__tela_produto.pega_dados()  #add parametros
-        codigo = dados_produto('codigo')
+        codigo = dados['codigo']
         produto = self.pega_produto(codigo)
         try:
             if produto == None:
-                self.__produtos.append(produto)
+                produto_incluir = Produto(dados['nome'], dados['codigo'], dados['preco'])
+                self.__produtos.append(produto_incluir)
             else:
                 raise ValueError
         except ValueError:
-            self.__tela_produto.mensagem('Produto já existe')
+            self.__tela_produto.mensagem('Produto já existente.')
 
 
     def lista_produtos(self):
         try:
-            if lista:
+            if self.__produtos:
                 for p in self.__produtos:
                     self.__tela_produto.mostra({'nome': p.nome, 'codigo': p.codigo, 'preco': p.preco})
             else:

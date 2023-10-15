@@ -1,5 +1,7 @@
 from entidade.compra import Compra
 from limite.telaCompra import TelaCompra
+from excecao.saldo_negativo import SaldoNegativoException
+import copy
 
 class ControladorCompra:
 
@@ -31,16 +33,23 @@ class ControladorCompra:
             self.__tela_compra.mensagem("Amigo não está no evento.")
             raise KeyError
         else:
-            compra = Compra(dados['codigo'], evento,
-                            self.__controlador_sistema.controlador_amigo.pega_amigo(dados['cpf']))
+            pagante = self.__controlador_sistema.controlador_amigo.pega_amigo(dados['cpf'])
+            compra = Compra(dados['codigo'], evento, pagante)
             while True:
                 self.__tela_compra.mensagem("Lista de produtos: ")
                 self.__controlador_sistema.controlador_produto.lista_produtos()
                 codigo_produto = self.__controlador_sistema.controlador_produto.tela_produto.seleciona()
                 if codigo_produto == 0:
-                    break
-                self.__controlador_sistema.controlador_produto.tela_produto.mensagem("Digite '0' para finalizar")
-                compra.add_produto(self.__controlador_sistema.controlador_produto.pega_produto(codigo_produto))
+                    if compra.produtos:
+                        break
+                    self.__tela_compra.mensagem("É obrigatório adicionar algum produto.")
+                elif not self.__controlador_sistema.controlador_produto.pega_produto(codigo_produto):
+                    self.__tela_compra.mensagem("Produto não existente.")
+                else:
+                    compra.add_produto(self.__controlador_sistema.controlador_produto.pega_produto(codigo_produto))
+                self.__tela_compra.mensagem("Digite '0' para finalizar")
+            if pagante.carteira.dinheiro < compra.valor_total():
+                raise SaldoNegativoException(pagante)
 
             self.__controlador_sistema.controlador_carteira.recebe_valor(compra.pagante, -compra.valor_total())
             self.__compras.append(compra)       # Pegar produtos
@@ -78,6 +87,13 @@ class ControladorCompra:
         try:
             if compra.quitada == False:
                 valor_parcial = compra.valor_parcial()
+                lista_devedores = copy.copy(compra.evento.amigos)
+                lista_devedores.remove(compra.pagante)
+
+                for d in lista_devedores:
+                    if d.carteira.dinheiro < valor_parcial:
+                        raise SaldoNegativoException
+
                 for a in compra.evento.amigos:
                     self.__controlador_sistema.controlador_carteira.recebe_valor(
                         a, -(valor_parcial)
@@ -91,3 +107,5 @@ class ControladorCompra:
                 raise KeyError
         except KeyError:
             self.__tela_compra.mensagem("Compra já está quitada.")
+        except SaldoNegativoException as e:
+            self.__tela_compra.mensagem(e)
