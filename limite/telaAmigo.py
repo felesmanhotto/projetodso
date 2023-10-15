@@ -55,7 +55,7 @@ class TelaAmigo(TelaAbstrata):
         print("\n")
         print("Nome: ", dados['nome'])
         print("CPF: ", dados['cpf'])
-        print("Dinheiro: R$", dados['dinheiro'])
+        print("Dinheiro: R$", round(dados['dinheiro'],2))
         print("\n")
 
     def seleciona(self):

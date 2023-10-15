@@ -44,7 +44,7 @@ class TelaProduto (TelaAbstrata):
         print("\n")
         print("Nome: ", dados['nome'])
         print("Codigo: ", dados['codigo'])
-        print("Preço: R$", dados['preco'])
+        print("Preço: R$", round(dados['preco'],2))
         print("\n")
 
     def seleciona(self):

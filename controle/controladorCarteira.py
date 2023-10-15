@@ -39,7 +39,7 @@ class ControladorCarteira:
                             divida -= (c.valor_total() - c.valor_parcial())
                         elif amigo in c.evento.amigos:
                             divida += c.valor_parcial()
-                self.__tela_carteira.mensagem(f"Dívida total: R${divida}")
+                self.__tela_carteira.mensagem(f"Dívida total: R${round(divida,2)}")
                 return divida
             else:
                 for c in self.__controlador_sistema.controlador_compra.compras:
@@ -48,7 +48,7 @@ class ControladorCarteira:
                             divida -= c.valor_parcial()
                         elif amigo in c.evento.amigos and credor == c.pagante:
                             divida += c.valor_parcial()
-                self.__tela_carteira.mensagem(f"Dívida parcial para {credor.nome}: R${divida}")
+                self.__tela_carteira.mensagem(f"Dívida parcial para {credor.nome}: R${round(divida,2)}")
                 return divida
         except KeyError:
             self.__tela_carteira.mensagem("Amigo credor não existente.")

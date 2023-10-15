@@ -16,7 +16,7 @@ class TelaCarteira():
     def opcoes(self, amigo):
         print("\n")
         print(f"-----Carteira De {amigo.nome}-----")
-        print(f"Dinheiro: R${amigo.carteira.dinheiro}")
+        print(f"Dinheiro: R${round(amigo.carteira.dinheiro,2)}")
         print("1 - Pagar")
         print("2 - Receber")
         print("3 - Verificar dívidas")
