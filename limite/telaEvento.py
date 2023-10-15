@@ -30,7 +30,7 @@ class TelaEvento(TelaAbstrata):
         print("-----DADOS-----")
         nome = input("Nome: ")
         data = input("Data: ")
-        codigo = input("Código: ")          # verificar
+        codigo = input("Código: ")
 
         return {'nome': nome, 'data': data, 'codigo': codigo}
 

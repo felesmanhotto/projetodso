@@ -1,4 +1,6 @@
 from limite.telaAbstrata import TelaAbstrata
+from excecao.dinheiro_negativo import DinheiroNegativoException
+from excecao.cpf_invalido import CpfInvalidoException
 
 class TelaAmigo(TelaAbstrata):
 
@@ -28,17 +30,32 @@ class TelaAmigo(TelaAbstrata):
     def pega_dados(self):
         print("-----DADOS-----")
         nome = input("Nome: ")
-        cpf = input("CPF: ")
-        dinheiro = input("Dinheiro: ")          # verificar
-        print("\n")
+        cpf = input("CPF (apenas digitos): ")
 
+        cpf_validar = [int(char) for char in cpf]
+        if len(cpf_validar) != 11:
+            raise CpfInvalidoException
+        if cpf_validar == cpf_validar[::-1]:
+            raise CpfInvalidoException
+        for i in range(9, 11):
+            valor = sum((cpf_validar[num] * ((i + 1) - num) for num in range(0, i)))
+            digito = ((valor * 10) % 11) % 10
+            if digito != cpf_validar[i]:
+                raise CpfInvalidoException
+
+        dinheiro = input("Dinheiro (R$): ")
+
+        if float(dinheiro) < 0:
+            raise DinheiroNegativoException
+
+        print("\n")
         return {'nome': nome, 'cpf': cpf, 'dinheiro': dinheiro}
 
     def mostra(self, dados):
         print("\n")
         print("Nome: ", dados['nome'])
         print("CPF: ", dados['cpf'])
-        print("Dinheiro: ", dados['dinheiro'])
+        print("Dinheiro: R$", dados['dinheiro'])
         print("\n")
 
     def seleciona(self):

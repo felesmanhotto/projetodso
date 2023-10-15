@@ -34,6 +34,7 @@ class ControladorProduto:
 
     def lista_produtos(self):
         try:
+            self.__tela_produto.mensagem("Lista de produtos: ")
             if self.__produtos:
                 for p in self.__produtos:
                     self.__tela_produto.mostra({'nome': p.nome, 'codigo': p.codigo, 'preco': p.preco})
@@ -41,6 +42,11 @@ class ControladorProduto:
                 raise KeyError
         except KeyError:
             self.__tela_produto.mensagem('Não há nenhum produto cadastrado.')
+
+    def lista_produtos_compra(self, compra):
+        self.__tela_produto.mensagem("Produtos na compra: ")
+        for p in compra.produtos:
+            self.__tela_produto.mensagem(p.nome)
 
     def altera_produto(self):
         self.lista_produtos()

@@ -1,5 +1,7 @@
 from entidade.amigo import Amigo
 from limite.telaAmigo import TelaAmigo
+from excecao.dinheiro_negativo import DinheiroNegativoException
+from excecao.cpf_invalido import CpfInvalidoException
 
 class ControladorAmigo:
     def __init__(self, controlador_sistema):
@@ -18,9 +20,10 @@ class ControladorAmigo:
         return None
 
     def inclui_amigo(self):
-        dados = self.__tela_amigo.pega_dados()  #add parametros
-        amigo = self.pega_amigo(dados['cpf'])
         try:
+            dados = self.__tela_amigo.pega_dados()  #add parametros
+            amigo = self.pega_amigo(dados['cpf'])
+
             if amigo == None:
                 amigo_incluir = Amigo(dados['nome'], dados['cpf'], dados['dinheiro'])
                 self.__amigos.append(amigo_incluir)
@@ -28,9 +31,16 @@ class ControladorAmigo:
                 raise KeyError
         except KeyError:
             self.__tela_amigo.mensagem("Amigo já existente.")
+        except DinheiroNegativoException as e:
+            self.__tela_amigo.mensagem(e)
+        except CpfInvalidoException as e:
+            self.__tela_amigo.mensagem(e)
+        except ValueError:
+            self.tela_amigo.mensagem("Dados inválidos.")
 
     def lista_amigos(self):
         try:
+            self.__tela_amigo.mensagem("Lista de amigos: ")
             if self.__amigos:
                 for a in self.__amigos:
                     self.__tela_amigo.mostra({'nome': a.nome, 'cpf': a.cpf, 'dinheiro': a.carteira.dinheiro})
@@ -78,6 +88,11 @@ class ControladorAmigo:
                 raise KeyError
         except KeyError:
             self.__tela_amigo.mensagem("Amigo não existente")
+
+    def lista_amigos_evento(self, evento):
+        self.__tela_amigo.mensagem("Amigos no evento: ")
+        for a in evento.amigos:
+            self.__tela_amigo.mostra({'nome': a.nome, 'cpf': a.cpf, 'dinheiro': a.carteira.dinheiro})
 
 
 

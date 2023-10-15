@@ -23,20 +23,20 @@ class TelaCompra(TelaAbstrata):
         print("5 - Olhar Carteira")
         print("0 - Retornar")
 
-        return self.le_num_inteiro("Escolha a opção: ", [1, 2, 3, 4, 5, 0])      # verificar
+        return self.le_num_inteiro("Escolha a opção: ", [1, 2, 3, 4, 5, 0])
 
     def pega_dados(self):
         print("-----DADOS-----")
         codigo = input("Código: ")
-        cpf_pagante = input("CPF do amigo pagante: ")          # verificar
+        cpf_pagante = input("CPF do amigo pagante: ")
 
-        return {'codigo': codigo, 'cpf': cpf_pagante}       # Pegar produtos
+        return {'codigo': codigo, 'cpf': cpf_pagante}
 
     def mostra(self, dados):
         print("Código: ", dados['codigo'])
         print("Pagante: ", dados['pagante'].nome)
         print("Produtos: ", dados['produtos'])
-        print("Valor: ", dados['valor'])
+        print("Valor: R$", dados['valor'])
         print("Quitada: ", dados['quitada'])
         print("\n")
 

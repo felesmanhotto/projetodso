@@ -29,6 +29,7 @@ class ControladorEvento:
 
     def lista_eventos(self):
         try:
+            self.__tela_evento.mensagem("Lista de eventos: ")
             if self.__eventos:
                 for e in self.__eventos:
                     self.__tela_evento.mostra({'nome': e.nome, 'data': e.data, 'codigo': e.codigo})
@@ -86,6 +87,7 @@ class ControladorEvento:
             self.__tela_evento.mensagem("Evento não existente.")
 
     def add_amigo(self, evento):
+        self.__controlador_sistema.controlador_amigo.lista_amigos()
         try:
             if evento.compras:
                 self.__tela_evento.mensagem("Não é possível adicionar amigos em um evento com compras.")

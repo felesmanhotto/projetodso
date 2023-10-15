@@ -15,7 +15,7 @@ class TelaAbstrata(ABC):
         pass
 
     @abstractmethod
-    def mostra(self):
+    def mostra(self, dados):
         pass
 
     @abstractmethod
@@ -23,5 +23,5 @@ class TelaAbstrata(ABC):
         pass
 
     @abstractmethod
-    def mensagem(self):
+    def mensagem(self, msg):
         pass

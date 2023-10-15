@@ -1,5 +1,5 @@
 from limite.telaAbstrata import TelaAbstrata
-
+from excecao.dinheiro_negativo import DinheiroNegativoException
 
 class TelaProduto (TelaAbstrata):
 
@@ -27,22 +27,29 @@ class TelaProduto (TelaAbstrata):
         return self.le_num_inteiro("Escolha a opção: ", [1, 2, 3, 4, 0])
 
     def pega_dados(self):
-        print("-----DADOS-----")
-        nome = input("Nome do produto: ")
-        codigo = int(input("Codigo do produto: "))
-        preco = int(input('Preço do produto: '))           # verificar
-
-        return {'nome': nome, 'codigo': codigo, 'preco': preco}
+        try:
+            print("-----DADOS-----")
+            nome = input("Nome do produto: ")
+            codigo = input("Codigo do produto: ")
+            preco = float(input("Preço do produto (R$): "))
+            if preco < 0:
+                raise DinheiroNegativoException
+            return {'nome': nome, 'codigo': codigo, 'preco': preco}
+        except ValueError:
+            self.mensagem("Preço inválido.")
+        except DinheiroNegativoException as e:
+            self.mensagem(e)
 
     def mostra(self, dados):
         print("\n")
         print("Nome: ", dados['nome'])
         print("Codigo: ", dados['codigo'])
-        print("Preço: ", dados['preco'])
+        print("Preço: R$", dados['preco'])
         print("\n")
 
     def seleciona(self):
-        return int(input("Codigo do produto selecionado: "))    # verificar
+        return input("Codigo do produto selecionado: ")
+
 
     def mensagem(self, msg):
         print(msg)
