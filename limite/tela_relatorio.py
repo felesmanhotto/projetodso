@@ -32,8 +32,10 @@ class TelaRelatorio:
         print("\n")
 
     def pega_dados(self):
-        mes = input("Mês que deseja selecionar: ")
-        if int(mes) > 13 or int(mes) < 1:
+        mes = input("Mês que deseja selecionar (número): ")
+        if len(mes) != 2:
+            raise ValueError
+        if int(mes) > 12 or int(mes) < 1:
             raise ValueError
         mes_formatado = mes[-2] + mes[-1]
         return mes_formatado
