@@ -1,6 +1,6 @@
-from limite.telaAbstrata import TelaAbstrata
-from excecao.dinheiro_negativo import DinheiroNegativoException
+from limite.tela_abstrata import TelaAbstrata
 from excecao.cpf_invalido import CpfInvalidoException
+from excecao.dinheiro_negativo import DinheiroNegativoException
 
 class TelaAmigo(TelaAbstrata):
 
@@ -17,6 +17,7 @@ class TelaAmigo(TelaAbstrata):
                 print()
 
     def opcoes(self):
+        print()
         print("-----AMIGOS-----")
         print("1 - Incluir Amigo")
         print("2 - Alterar Amigo")
@@ -43,7 +44,7 @@ class TelaAmigo(TelaAbstrata):
             if digito != cpf_validar[i]:
                 raise CpfInvalidoException
 
-        dinheiro = input("Dinheiro (R$): ")
+        dinheiro = float(input("Dinheiro (R$): "))
 
         if float(dinheiro) < 0:
             raise DinheiroNegativoException

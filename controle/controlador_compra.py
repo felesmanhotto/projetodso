@@ -1,5 +1,5 @@
 from entidade.compra import Compra
-from limite.telaCompra import TelaCompra
+from limite.tela_compra import TelaCompra
 from excecao.saldo_negativo import SaldoNegativoException
 import copy
 

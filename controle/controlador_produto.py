@@ -1,5 +1,6 @@
 from entidade.produto import Produto
-from limite.telaProduto import TelaProduto
+from limite.tela_produto import TelaProduto
+from excecao.dinheiro_negativo import DinheiroNegativoException
 
 class ControladorProduto:
 
@@ -23,18 +24,21 @@ class ControladorProduto:
         return None
 
     def inclui_produto(self):
-        dados = self.__tela_produto.pega_dados()  #add parametros
-        codigo = dados['codigo']
-        produto = self.pega_produto(codigo)
         try:
+            dados = self.__tela_produto.pega_dados()
+            codigo = dados['codigo']
+            produto = self.pega_produto(codigo)
             if produto == None:
                 produto_incluir = Produto(dados['nome'], dados['codigo'], dados['preco'])
                 self.__produtos.append(produto_incluir)
             else:
                 raise ValueError
+        except KeyError:
+            self.__tela_produto.mensagem('Código inválido.')
         except ValueError:
-            self.__tela_produto.mensagem('Produto já existente.')
-
+            self.__tela_produto.mensagem("Preço inválido.")
+        except DinheiroNegativoException as e:
+            self.__tela_produto.mensagem(e)
 
     def lista_produtos(self):
         try:
@@ -53,18 +57,21 @@ class ControladorProduto:
             self.__tela_produto.mensagem(p.nome)
 
     def altera_produto(self):
-        self.lista_produtos()
-        codigo_produto = self.__tela_produto.seleciona()   #add parametros
-        produto = self.pega_produto(codigo_produto)
         try:
+            self.lista_produtos()
+            codigo_produto = self.__tela_produto.seleciona()
+            produto = self.pega_produto(codigo_produto)
             if produto:
-                novos_dados = self.__tela_produto.pega_dados()    #add parametros
+                novos_dados = self.__tela_produto.pega_dados()
+                if self.pega_produto(novos_dados['codigo']):
+                    raise KeyError
                 produto.nome = novos_dados['nome']
+                produto.codigo = novos_dados['codigo']
                 produto.preco = novos_dados['preco']
             else:
                 raise KeyError
         except KeyError:
-            self.tela_produto.mensagem('Produto não existente')
+            self.tela_produto.mensagem('Código inválido.')
 
     def excluir_produto(self):
         self.lista_produtos()

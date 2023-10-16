@@ -1,4 +1,4 @@
-from limite.telaCarteira import TelaCarteira
+from limite.tela_carteira import TelaCarteira
 from entidade.carteira import Carteira
 from excecao.saldo_negativo import SaldoNegativoException
 
@@ -9,18 +9,23 @@ class ControladorCarteira:
         self.__controlador_sistema = controlador_sistema
 
     def paga(self, amigo):
-        valor = self.__tela_carteira.pega_valor()
         try:
+            valor = self.__tela_carteira.pega_valor()
             if valor < amigo.carteira.dinheiro:
                 amigo.carteira.somar_dinheiro(-valor)
             else:
                 raise SaldoNegativoException(amigo)
         except SaldoNegativoException as e:
             self.__tela_carteira.mensagem(e)
+        except ValueError:
+            self.__tela_carteira.mensagem("Valor inválido.")
 
     def recebe(self, amigo):
-        valor = self.__tela_carteira.pega_valor()
-        amigo.carteira.somar_dinheiro(valor)
+        try:
+            valor = self.__tela_carteira.pega_valor()
+            amigo.carteira.somar_dinheiro(valor)
+        except ValueError:
+            self.__tela_carteira.mensagem("Valor inválido.")
 
     def recebe_valor(self, amigo, valor):
         amigo.carteira.somar_dinheiro(valor)

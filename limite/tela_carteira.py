@@ -24,10 +24,9 @@ class TelaCarteira():
         return self.le_num_inteiro("Escolha a opção: ", [1, 2, 3, 0])
 
     def pega_valor(self):
-        try:
-            return float(input("Digite o valor (R$): "))
-        except ValueError:
-            self.mensagem("Valor inválido.")
+        valor = float(input("Digite o valor (R$): "))
+        if valor < 0:
+            raise ValueError
 
     def pega_cpf_credor(self):
         return input("CPF do credor (Para verificar dívida total, deixe vazio): ")

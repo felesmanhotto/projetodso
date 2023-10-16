@@ -13,6 +13,7 @@ class TelaRelatorio:
                 print()
 
     def opcoes(self):
+        print()
         print("-----RELATÓRIOS-----")
         print("1 - Criar relatório")
         print("2 - Excluir relatórios")
@@ -36,8 +37,6 @@ class TelaRelatorio:
             raise ValueError
         mes_formatado = mes[-2] + mes[-1]
         return mes_formatado
-
-        self.mensagem("Mês inválido.")
 
 
     def mensagem(self, msg):

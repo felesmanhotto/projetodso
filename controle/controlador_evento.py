@@ -1,5 +1,5 @@
 from entidade.evento import Evento
-from limite.telaEvento import TelaEvento
+from limite.tela_evento import TelaEvento
 from excecao.saldo_negativo import SaldoNegativoException
 
 class ControladorEvento:
@@ -16,9 +16,9 @@ class ControladorEvento:
         return None
 
     def inclui_evento(self):
-        dados = self.__tela_evento.pega_dados()  #add parametros
-        evento = self.pega_evento(dados['codigo'])
         try:
+            dados = self.__tela_evento.pega_dados()  #add parametros
+            evento = self.pega_evento(dados['codigo'])
             if evento == None:
                 evento_incluir = Evento(dados['nome'], dados['data'], dados['codigo'])  # verificar
                 self.__eventos.append(evento_incluir)
@@ -26,6 +26,8 @@ class ControladorEvento:
                 raise KeyError
         except KeyError:
             self.__tela_evento.mensagem("Evento já existente.")
+        except ValueError:
+            self.__tela_evento.mensagem("Data inválida")
 
     def lista_eventos(self):
         try:
@@ -39,20 +41,25 @@ class ControladorEvento:
             self.__tela_evento.mensagem("Não há nenhum evento cadastrado.")
 
 
+
     def altera_evento(self):
-        self.lista_eventos()
-        codigo_evento = self.__tela_evento.seleciona()   #add parametros
-        evento = self.pega_evento(codigo_evento)
         try:
+            self.lista_eventos()
+            codigo_evento = self.__tela_evento.seleciona()
+            evento = self.pega_evento(codigo_evento)
             if evento:
-                novos_dados = self.__tela_evento.pega_dados()  # add parametros
+                novos_dados = self.__tela_evento.pega_dados()
+                if self.pega_evento(novos_dados['codigo']):
+                    raise KeyError
                 evento.nome = novos_dados['nome']
                 evento.data = novos_dados['data']
-                evento.codigo = novos_dados['codigo']  # verificar
+                evento.codigo = novos_dados['codigo']
             else:
                 raise KeyError
         except KeyError:
-            self.__tela_evento.mensagem("Evento não existente.")
+            self.__tela_evento.mensagem("Evento inválido.")
+        except ValueError:
+            self.__tela_evento.mensagem("Data inválida")
 
     def exclui_evento(self):
         self.lista_eventos()
@@ -122,7 +129,7 @@ class ControladorEvento:
         try:
             cpf = self.__controlador_sistema.controlador_amigo.tela_amigo.seleciona()
             if self.__controlador_sistema.controlador_amigo.pega_amigo(cpf) in evento.amigos:
-                evento.exc_amigo(cpf)  # verificar
+                evento.exc_amigo(cpf)
             else:
                 raise KeyError
         except KeyError:

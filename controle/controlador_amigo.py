@@ -1,5 +1,5 @@
 from entidade.amigo import Amigo
-from limite.telaAmigo import TelaAmigo
+from limite.tela_amigo import TelaAmigo
 from excecao.dinheiro_negativo import DinheiroNegativoException
 from excecao.cpf_invalido import CpfInvalidoException
 
@@ -56,18 +56,24 @@ class ControladorAmigo:
 
     def altera_amigo(self):
         self.lista_amigos()
-        cpf_amigo = self.__tela_amigo.seleciona()   #add parametros
+        cpf_amigo = self.__tela_amigo.seleciona()
         amigo = self.pega_amigo(cpf_amigo)
         try:
             if amigo:
-                novos_dados = self.__tela_amigo.pega_dados()  # add parametros
+                novos_dados = self.__tela_amigo.pega_dados()
+                if self.pega_amigo(novos_dados['cpf']):
+                    raise CpfInvalidoException
                 amigo.nome = novos_dados['nome']
-                amigo.cpf = novos_dados['cpf']  # verificar
+                amigo.cpf = novos_dados['cpf']
                 amigo.carteira.dinheiro = novos_dados['dinheiro']
             else:
                 raise KeyError
         except KeyError:
             self.__tela_amigo.mensagem("Amigo não existente.")
+        except CpfInvalidoException:
+            self.__tela_amigo.mensagem("Já existe alguém com este CPF.")
+        except ValueError:
+            self.__tela_amigo.mensagem("Dados inválidos.")
 
     def excluir_amigo(self):
         self.lista_amigos()

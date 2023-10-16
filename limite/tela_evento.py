@@ -1,4 +1,4 @@
-from limite.telaAbstrata import TelaAbstrata
+from limite.tela_abstrata import TelaAbstrata
 
 class TelaEvento(TelaAbstrata):
 
@@ -29,9 +29,18 @@ class TelaEvento(TelaAbstrata):
     def pega_dados(self):
         print("-----DADOS-----")
         nome = input("Nome: ")
-        data = input("Data: ")
-        codigo = input("Código: ")
+        data = input("Data (dd/mm): ")
 
+        if len(data) != 5:
+            raise ValueError
+        if data[2] != '/':
+            raise ValueError
+        if int(data[0] + data[1]) < 1 or int(data[0] + data[1]) > 31:
+            raise ValueError
+        if int(data[3] + data[4]) < 1 or int(data[3] + data[4]) > 12:
+            raise ValueError
+
+        codigo = input("Código: ")
         return {'nome': nome, 'data': data, 'codigo': codigo}
 
     def mostra(self, dados):

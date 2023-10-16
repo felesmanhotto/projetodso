@@ -1,9 +1,9 @@
-from limite.telaSistema import TelaSistema
-from controle.controladorEvento import ControladorEvento
-from controle.controladorProduto import ControladorProduto
-from controle.controladorAmigo import ControladorAmigo
-from controle.controladorCompra import ControladorCompra
-from controle.controladorCarteira import ControladorCarteira
+from limite.tela_sistema import TelaSistema
+from controle.controlador_evento import ControladorEvento
+from controle.controlador_produto import ControladorProduto
+from controle.controlador_amigo import ControladorAmigo
+from controle.controlador_compra import ControladorCompra
+from controle.controlador_carteira import ControladorCarteira
 from controle.controlador_relatorio import ControladorRelatorio
 
 class ControladorSistema:
@@ -55,7 +55,3 @@ class ControladorSistema:
                         4: self.menu_relatorios, 8: self.encerra_sistema}
         while True:
             lista_opcoes[self.__tela_sistema.opcoes()]()
-
-if __name__ == "__main__":
-    sis = ControladorSistema()
-    sis.inicializa_sistema()
