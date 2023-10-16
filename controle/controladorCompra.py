@@ -33,32 +33,30 @@ class ControladorCompra:
         elif self.__controlador_sistema.controlador_amigo.pega_amigo(dados['cpf']) not in evento.amigos:
             self.__tela_compra.mensagem("Amigo não está no evento.")
             raise KeyError
-        else:
-            pagante = self.__controlador_sistema.controlador_amigo.pega_amigo(dados['cpf'])
-            compra = Compra(dados['codigo'], evento, pagante)
-            while True:
-                self.__tela_compra.mensagem("Lista de produtos: ")
-                self.__controlador_sistema.controlador_produto.lista_produtos()
-                self.__tela_compra.mensagem('')
-                self.__tela_compra.mensagem("Produtos adicionados: ")
-                self.__controlador_sistema.controlador_produto.lista_produtos_compra(compra)
-                self.__tela_compra.mensagem('')
-                codigo_produto = self.__controlador_sistema.controlador_produto.tela_produto.seleciona()
-                if codigo_produto == 0:
-                    if compra.produtos:
-                        break
-                    self.__tela_compra.mensagem("A compra precisa ter ao menos 1 produto.")
-                elif not self.__controlador_sistema.controlador_produto.pega_produto(codigo_produto):
-                    self.__tela_compra.mensagem("Produto não existente.")
-                else:
-                    compra.add_produto(self.__controlador_sistema.controlador_produto.pega_produto(codigo_produto))
-                self.__tela_compra.mensagem("Digite '0' para finalizar")
-            if pagante.carteira.dinheiro < compra.valor_total():
-                raise SaldoNegativoException(pagante)
 
-            self.__controlador_sistema.controlador_carteira.recebe_valor(compra.pagante, -compra.valor_total())
-            self.__compras.append(compra)
-            return compra
+        pagante = self.__controlador_sistema.controlador_amigo.pega_amigo(dados['cpf'])
+        compra = Compra(dados['codigo'], evento, pagante)
+        while True:
+            self.__controlador_sistema.controlador_produto.lista_produtos()
+            self.__tela_compra.mensagem('')
+            self.__controlador_sistema.controlador_produto.lista_produtos_compra(compra)
+            self.__tela_compra.mensagem('')
+            codigo_produto = self.__controlador_sistema.controlador_produto.tela_produto.seleciona()
+            if not codigo_produto:
+                if compra.produtos:
+                    break
+                self.__tela_compra.mensagem("A compra precisa ter ao menos 1 produto.")
+            elif not self.__controlador_sistema.controlador_produto.pega_produto(codigo_produto):
+                self.__tela_compra.mensagem("Produto não existente.")
+            else:
+                compra.add_produto(self.__controlador_sistema.controlador_produto.pega_produto(codigo_produto))
+            self.__tela_compra.mensagem("Deixe vazio para finalizar")
+        if pagante.carteira.dinheiro < compra.valor_total():
+            raise SaldoNegativoException(pagante)
+
+        self.__controlador_sistema.controlador_carteira.recebe_valor(compra.pagante, -compra.valor_total())
+        self.__compras.append(compra)
+        return compra
 
     def lista_compras_evento(self, evento):
         try:

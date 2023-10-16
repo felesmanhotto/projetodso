@@ -4,6 +4,7 @@ from controle.controladorProduto import ControladorProduto
 from controle.controladorAmigo import ControladorAmigo
 from controle.controladorCompra import ControladorCompra
 from controle.controladorCarteira import ControladorCarteira
+from controle.controlador_relatorio import ControladorRelatorio
 
 class ControladorSistema:
     def __init__(self):
@@ -12,6 +13,7 @@ class ControladorSistema:
         self.__controlador_produto = ControladorProduto(self)
         self.__controlador_compra = ControladorCompra(self)
         self.__controlador_carteira = ControladorCarteira(self)
+        self.__controlador_relatorio = ControladorRelatorio(self)
         self.__tela_sistema = TelaSistema()
 
     @property
@@ -42,12 +44,15 @@ class ControladorSistema:
     def menu_produtos(self):
         self.__controlador_produto.abre_tela()
 
+    def menu_relatorios(self):
+        self.__controlador_relatorio.abre_tela()
+
     def encerra_sistema(self):
         exit(0)
 
     def abre_tela(self):
         lista_opcoes = {1: self.menu_amigos, 2: self.menu_eventos, 3: self.menu_produtos,
-                        8: self.encerra_sistema}
+                        4: self.menu_relatorios, 8: self.encerra_sistema}
         while True:
             lista_opcoes[self.__tela_sistema.opcoes()]()
 

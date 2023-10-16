@@ -10,6 +10,10 @@ class ControladorAmigo:
         self.__tela_amigo = TelaAmigo()
 
     @property
+    def amigos(self):
+        return self.__amigos
+
+    @property
     def tela_amigo(self):
         return self.__tela_amigo
 
@@ -106,5 +110,3 @@ class ControladorAmigo:
 
         while True:
             lista_opcoes[self.__tela_amigo.opcoes()]()
-
-    # verificar divida

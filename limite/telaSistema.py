@@ -19,8 +19,9 @@ class TelaSistema():
         print("1 - Menu de Amigos")
         print("2 - Menu de Eventos")
         print("3 - Menu de Produtos")
+        print("4 - Menu de Relatórios")
         print("8 - Encerrar Sistema")
 
-        return self.le_num_inteiro("Escolha a opção: ", [1, 2, 3, 8])      # verificar
+        return self.le_num_inteiro("Escolha a opção: ", [1, 2, 3, 4, 8])      # verificar
 
 # UML: NAO HERDA DA TELA ABSTRATA

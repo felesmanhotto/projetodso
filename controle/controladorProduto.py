@@ -9,6 +9,10 @@ class ControladorProduto:
         self.__tela_produto = TelaProduto()
 
     @property
+    def produtos(self):
+        return self.__produtos
+
+    @property
     def tela_produto(self):
         return self.__tela_produto
 

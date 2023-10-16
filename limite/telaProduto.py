@@ -31,6 +31,8 @@ class TelaProduto (TelaAbstrata):
             print("-----DADOS-----")
             nome = input("Nome do produto: ")
             codigo = input("Codigo do produto: ")
+            if not codigo:
+                raise KeyError
             preco = float(input("Preço do produto (R$): "))
             if preco < 0:
                 raise DinheiroNegativoException
@@ -39,6 +41,8 @@ class TelaProduto (TelaAbstrata):
             self.mensagem("Preço inválido.")
         except DinheiroNegativoException as e:
             self.mensagem(e)
+        except KeyError:
+            self.mensagem("Código não pode ser nulo")
 
     def mostra(self, dados):
         print("\n")

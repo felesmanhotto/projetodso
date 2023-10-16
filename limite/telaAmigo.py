@@ -59,7 +59,7 @@ class TelaAmigo(TelaAbstrata):
         print("\n")
 
     def seleciona(self):
-        return input("CPF do amigo a selecionar: ")     # verificar
+        return input("CPF do amigo a selecionar: ")
 
     def mensagem(self, msg):
         print(msg)
