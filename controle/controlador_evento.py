@@ -49,7 +49,7 @@ class ControladorEvento:
             evento = self.pega_evento(codigo_evento)
             if evento:
                 novos_dados = self.__tela_evento.pega_dados()
-                if self.pega_evento(novos_dados['codigo']):
+                if self.pega_evento(novos_dados['codigo']) and not self.pega_evento(novos_dados['codigo']) == evento:
                     raise KeyError
                 evento.nome = novos_dados['nome']
                 evento.data = novos_dados['data']

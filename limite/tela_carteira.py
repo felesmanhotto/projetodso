@@ -27,6 +27,7 @@ class TelaCarteira():
         valor = float(input("Digite o valor (R$): "))
         if valor < 0:
             raise ValueError
+        return valor
 
     def pega_cpf_credor(self):
         return input("CPF do credor (Para verificar dívida total, deixe vazio): ")
