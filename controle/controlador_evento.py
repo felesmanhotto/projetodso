@@ -131,6 +131,7 @@ class ControladorEvento:
             if evento.compras:
                 self.__tela_evento.mensagem("Não é possível remover amigos de um evento com compras.")
                 raise KeyError
+            self.__controlador_sistema.controlador_amigo.lista_amigos_evento(evento)
             cpf = self.__controlador_sistema.controlador_amigo.tela_amigo.seleciona()
             if self.__controlador_sistema.controlador_amigo.pega_amigo(cpf) in evento.amigos:
                 evento.exc_amigo(cpf)
