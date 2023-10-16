@@ -52,6 +52,7 @@ class ControladorAmigo:
                 raise KeyError
         except KeyError:
             self.__tela_amigo.mensagem("Não há nenhum amigo cadastrado.")
+            self.__tela_amigo.mensagem('')
 
 
     def altera_amigo(self):

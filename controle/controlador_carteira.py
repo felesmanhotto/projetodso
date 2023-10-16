@@ -31,6 +31,7 @@ class ControladorCarteira:
         amigo.carteira.somar_dinheiro(valor)
 
     def verifica_divida(self, amigo):
+        self.__controlador_sistema.controlador_amigo.lista_amigos()
         cpf_credor = self.__tela_carteira.pega_cpf_credor()
         credor = self.__controlador_sistema.controlador_amigo.pega_amigo(cpf_credor)
         divida = 0
@@ -58,7 +59,7 @@ class ControladorCarteira:
         except KeyError:
             self.__tela_carteira.mensagem("Amigo credor não existente.")
 
-    def retorna(self, _):
+    def retorna(self, amigo=''):
         self.__controlador_sistema.controlador_amigo.abre_tela()
 
     def abre_tela(self, amigo):

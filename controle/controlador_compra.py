@@ -72,6 +72,7 @@ class ControladorCompra:
                 raise KeyError
         except KeyError:
             self.__tela_compra.mensagem("Não há nenhuma compra cadastrada.")
+            self.__tela_compra.mensagem('')
 
 
     def exclui_compra(self, evento):

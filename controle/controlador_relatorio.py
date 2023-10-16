@@ -60,6 +60,7 @@ class ControladorRelatorio:
                 raise KeyError
         except KeyError:
             self.__tela_relatorio.mensagem("Não há nenhum relatório cadastrado.")
+            self.__tela_relatorio.mensagem('')
 
     def pega_relatorio_mes(self, mes):
         for r in self.__relatorios:

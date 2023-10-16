@@ -39,6 +39,7 @@ class ControladorEvento:
                 raise KeyError
         except KeyError:
             self.__tela_evento.mensagem("Não há nenhum evento cadastrado.")
+            self.__tela_evento.mensagem('')
 
 
 
@@ -127,13 +128,17 @@ class ControladorEvento:
 
     def remove_amigo(self, evento):
         try:
+            if evento.compras:
+                self.__tela_evento.mensagem("Não é possível remover amigos de um evento com compras.")
+                raise KeyError
             cpf = self.__controlador_sistema.controlador_amigo.tela_amigo.seleciona()
             if self.__controlador_sistema.controlador_amigo.pega_amigo(cpf) in evento.amigos:
                 evento.exc_amigo(cpf)
             else:
+                self.__tela_evento.mensagem("Amigo não está no evento.")
                 raise KeyError
         except KeyError:
-            self.__tela_evento.mensagem("Amigo não está no evento.")
+            pass
         self.__tela_evento.mostra_um_evento(evento)
 
     def remove_compra(self, evento):

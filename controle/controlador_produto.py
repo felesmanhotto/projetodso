@@ -50,6 +50,7 @@ class ControladorProduto:
                 raise KeyError
         except KeyError:
             self.__tela_produto.mensagem('Não há nenhum produto cadastrado.')
+            self.__tela_produto.mensagem('')
 
     def lista_produtos_compra(self, compra):
         self.__tela_produto.mensagem("Produtos na compra: ")
