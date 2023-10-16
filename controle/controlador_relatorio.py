@@ -20,7 +20,7 @@ class ControladorRelatorio:
                 for compra in self.__controlador_sistema.controlador_compra.compras:
                     if compra.evento.data[3] + compra.evento.data[4] == mes:
                         if amigo in compra.evento.amigos:
-                            if compra.quitada == False:
+                            if compra.quitada == True:
                                 valor_amigo += compra.valor_parcial()
                             elif compra.pagante == amigo:
                                 valor_amigo += compra.valor_total()

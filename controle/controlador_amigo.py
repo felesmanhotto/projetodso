@@ -62,7 +62,7 @@ class ControladorAmigo:
         try:
             if amigo:
                 novos_dados = self.__tela_amigo.pega_dados()
-                if self.pega_amigo(novos_dados['cpf']):
+                if self.pega_amigo(novos_dados['cpf']) and not self.pega_amigo(novos_dados['cpf']) == amigo:
                     raise CpfInvalidoException
                 amigo.nome = novos_dados['nome']
                 amigo.cpf = novos_dados['cpf']

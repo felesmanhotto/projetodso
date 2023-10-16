@@ -64,7 +64,7 @@ class ControladorProduto:
             produto = self.pega_produto(codigo_produto)
             if produto:
                 novos_dados = self.__tela_produto.pega_dados()
-                if self.pega_produto(novos_dados['codigo']):
+                if self.pega_produto(novos_dados['codigo']) and not self.pega_produto(novos_dados['codigo']) == produto:
                     raise KeyError
                 produto.nome = novos_dados['nome']
                 produto.codigo = novos_dados['codigo']
